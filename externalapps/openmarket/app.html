@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OpenMarket – App</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: #f3f3f3;
+        color: #111;
+    }
+
+    .topbar {
+        background: #ffffffcc;
+        backdrop-filter: blur(12px);
+        padding: 12px 25px;
+        border-bottom: 1px solid #ddd;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .topbar a {
+        text-decoration: none;
+        color: #0078d4;
+        font-weight: 600;
+    }
+
+    .container {
+        padding: 40px 60px;
+    }
+
+    .app-title {
+        font-size: 2.4rem;
+        margin-bottom: 5px;
+    }
+
+    .app-meta {
+        color: #555;
+        margin-bottom: 20px;
+    }
+
+    .info-box {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        margin-top: 25px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+    <a href="index.html">← Back to Store</a>
+</div>
+
+<div class="container">
+    <h1 class="app-title" id="appName">Loading...</h1>
+    <div class="app-meta" id="appMeta"></div>
+
+    <div class="info-box">
+        <h3>Description</h3>
+        <p id="appDescription">Loading...</p>
+    </div>
+</div>
+
+<script>
+    // Get ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const appId = urlParams.get("id");
+
+    async function loadApp() {
+        try {
+            const response = await fetch("apps.json");
+            const apps = await response.json();
+
+            // Find app by ID
+            const app = apps.find(a => a.id === appId);
+
+            if (!app) {
+                document.getElementById("appName").innerText = "App Not Found";
+                document.getElementById("appDescription").innerText = "This app does not exist.";
+                return;
+            }
+
+            // Fill page
+            document.getElementById("appName").innerText = app.name;
+            document.getElementById("appMeta").innerText = 
+                `By ${app.author} • Version ${app.version} • ID ${app.id}`;
+            document.getElementById("appDescription").innerText = app.description;
+
+        } catch (err) {
+            console.error("Error loading app:", err);
+        }
+    }
+
+    loadApp();
+</script>
+
+</body>
+</html>
