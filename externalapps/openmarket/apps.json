@@ -4,20 +4,32 @@
         "name": "Sample App",
         "description": "A placeholder open‑source tool.",
         "author": "OpenDev",
-        "version": "1.0.0"
+        "version": "1.0.0",
+        "icon": "icons/sample.png",
+        "rating": 4.5,
+        "reviews": 128,
+        "github": "https://github.com/example/sample-app"
     },
     {
         "id": "0x00002",
         "name": "OpenTool",
         "description": "Lightweight utility for developers.",
         "author": "DevStudio",
-        "version": "2.3.1"
+        "version": "2.3.1",
+        "icon": "icons/opentool.png",
+        "rating": 4.8,
+        "reviews": 302,
+        "github": "https://github.com/example/opentool"
     },
-    {
+    {   
         "id": "0x00003",
         "name": "PixelEdit",
-        "description": "Open‑source pixel art editor.",
-        "author": "PixelSoft",
-        "version": "0.9.4"
-    }
+        "description": "A Pixel Art Studio App",
+        "author": "PixelDev",
+        "version": "v0.9.4beta",
+        "icon": "icons/pixeledit.png",
+        "rating": 4.6,
+        "reviews": 305,
+        "github": "https://github.com/example/pixeledit"
 ]
+
