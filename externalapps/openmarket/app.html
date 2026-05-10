@@ -36,14 +36,45 @@
         padding: 40px 60px;
     }
 
-    .app-title {
-        font-size: 2.4rem;
-        margin-bottom: 5px;
+    .app-header {
+        display: flex;
+        align-items: center;
+        gap: 25px;
     }
 
-    .app-meta {
-        color: #555;
-        margin-bottom: 20px;
+    .app-icon {
+        width: 120px;
+        height: 120px;
+        border-radius: 20px;
+        background: #ddd;
+        object-fit: cover;
+    }
+
+    .app-title {
+        font-size: 2.4rem;
+        margin: 0;
+    }
+
+    .rating {
+        margin-top: 5px;
+        color: #ffb400;
+        font-size: 1.2rem;
+    }
+
+    .get-btn {
+        margin-top: 15px;
+        padding: 12px 25px;
+        background: #0078d4;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+    .get-btn:hover {
+        background: #0062b3;
     }
 
     .info-box {
@@ -52,6 +83,16 @@
         border-radius: 12px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.08);
         margin-top: 25px;
+    }
+
+    .github-btn {
+        margin-left: 10px;
+        padding: 10px 18px;
+        background: #24292e;
+        color: white;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 0.95rem;
     }
 </style>
 </head>
@@ -63,39 +104,65 @@
 </div>
 
 <div class="container">
-    <h1 class="app-title" id="appName">Loading...</h1>
-    <div class="app-meta" id="appMeta"></div>
+
+    <div class="app-header">
+        <img id="appIcon" class="app-icon" src="">
+        <div>
+            <h1 class="app-title" id="appName">Loading...</h1>
+            <div id="appMeta"></div>
+            <div class="rating" id="appRating"></div>
+            <button class="get-btn" id="getBtn">Get</button>
+            <a id="githubBtn" class="github-btn" href="#" target="_blank">GitHub</a>
+        </div>
+    </div>
 
     <div class="info-box">
         <h3>Description</h3>
         <p id="appDescription">Loading...</p>
     </div>
+
 </div>
 
 <script>
-    // Get ID from URL
     const urlParams = new URLSearchParams(window.location.search);
     const appId = urlParams.get("id");
+
+    function generateStars(rating) {
+        const full = Math.floor(rating);
+        const half = rating % 1 >= 0.5 ? 1 : 0;
+        const empty = 5 - full - half;
+
+        return "★".repeat(full) + 
+               (half ? "½" : "") + 
+               "☆".repeat(empty);
+    }
 
     async function loadApp() {
         try {
             const response = await fetch("apps.json");
             const apps = await response.json();
-
-            // Find app by ID
             const app = apps.find(a => a.id === appId);
 
             if (!app) {
                 document.getElementById("appName").innerText = "App Not Found";
-                document.getElementById("appDescription").innerText = "This app does not exist.";
                 return;
             }
 
-            // Fill page
             document.getElementById("appName").innerText = app.name;
-            document.getElementById("appMeta").innerText = 
-                `By ${app.author} • Version ${app.version} • ID ${app.id}`;
+            document.getElementById("appIcon").src = app.icon;
+            document.getElementById("appMeta").innerText =
+                `By ${app.author} • Version ${app.version} • ${app.reviews} reviews`;
+
+            document.getElementById("appRating").innerText =
+                generateStars(app.rating) + ` (${app.rating})`;
+
             document.getElementById("appDescription").innerText = app.description;
+
+            document.getElementById("githubBtn").href = app.github;
+
+            document.getElementById("getBtn").onclick = () => {
+                alert("This would install the app (future feature).");
+            };
 
         } catch (err) {
             console.error("Error loading app:", err);
@@ -107,3 +174,4 @@
 
 </body>
 </html>
+
